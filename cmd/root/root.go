@@ -44,7 +44,7 @@ func newHelmUpgradeCmd() *cobra.Command {
 	}
 
 	cmd.Flags().StringVarP(&helmReleaseName, helmReleaseFlag, "r", "", upgradeHookUsage)
-	cmd.Flags().StringVarP(&helmReleaseNamespace, helmReleaseNamespaceFlag, "n", "", upgradeHookUsage)
+	cmd.Flags().StringVarP(&helmReleaseNamespace, helmReleaseNamespaceFlag, "", "", upgradeHookUsage)
 	cmd.Flags().StringVarP(&imageRegistryName, imageRegistryFlag, "i", "eu.gcr.io/amazing-chalice-243510", upgradeHookUsage)
 	rErr := cmd.MarkFlagRequired(helmReleaseFlag)
 	nErr := cmd.MarkFlagRequired(helmReleaseNamespaceFlag)
