@@ -1,0 +1,43 @@
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+name: Handle Release
+jobs:
+  generate:
+    name: Create release-artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: v1.30
+
+      - name: Set up Go 1.15
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15
+        id: go
+
+      - name: Release with GoReleaser
+        uses: goreleaser/goreleaser-action@v2
+        with:
+          version: latest
+          args: release --skip-validate
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+
+      - name: Update plugin.yaml
+        uses: pocket-apps/action-update-version@v1
+        with:
+          files: 'plugin.yaml'
+          version-regexp: '\d+.\d+.\d+'
+          repo-token: ${{ secrets.TOKEN }}
