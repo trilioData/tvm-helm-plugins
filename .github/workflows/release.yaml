@@ -1,18 +1,14 @@
-name: Plugin CI
 on:
   push:
-    branches:
-      - 'main'
-  pull_request:
-    branches:
-      - 'main'
-
+    tags:
+      - 'v*.*.*'
+name: Handle Release
 jobs:
-  # pre-build job run golangci-lint
-  pre-build:
+  generate:
+    name: Create release-artifacts
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout the repository
         uses: actions/checkout@v2
 
       - name: Run golangci-lint
@@ -31,5 +27,10 @@ jobs:
         with:
           version: latest
           args: release --skip-validate
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
