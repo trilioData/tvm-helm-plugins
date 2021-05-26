@@ -9,10 +9,10 @@ import (
 )
 
 const (
-	binaryName               = "tvm-upgrade"
-	helmReleaseFlag          = "release"
-	imageRegistryFlag        = "registry"
-	upgradeHookUsage         = "tvm-upgrade triggers pre upgrade job of the TVM v2.0.x helm releases to the new TVM v2.1.x release"
+	binaryName        = "tvm-upgrade"
+	helmReleaseFlag   = "release"
+	imageRegistryFlag = "registry"
+	upgradeHookUsage  = "tvm-upgrade triggers pre upgrade job of the TVM v2.0.x helm releases to the new TVM v2.1.x release"
 
 	shortUsage = "tvm-upgrade is used to run pre upgrade job from v2.0.x to v2.1.x TVM operator"
 	longUsage  = `tvm-upgrade is used to run the pre upgrade job before upgrade from v2.0.x helm release to the new 
