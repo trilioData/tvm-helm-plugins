@@ -6,7 +6,7 @@
 ## Install
 
 ```
-helm plugin install <URL which I update later>
+helm plugin install https://github.com/trilioData/tvm-helm-plugins/
 ```
 
 ## Running a pre-upgrade job
