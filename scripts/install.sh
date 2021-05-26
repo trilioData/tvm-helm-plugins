@@ -18,7 +18,7 @@ case "${archOut}" in
     *)                  arch=386;;
 esac
 echo "OS/Arch : ${os}/${arch}"
-url="https://github.com/trilioData/tvm-helm-plugins/releases/download/${version}/tvm-upgrade_${version}_${os}_${arch}.tar.gz?raw=true"
+url="https://github.com/trilioData/tvm-helm-plugins/releases/download/v${version}/tvm-upgrade_v${version}_${os}_${arch}.tar.gz?raw=true"
 filename=$(echo "${url}" | sed -e "s/^.*\///g" | awk -F "?" '{print $1}')
 echo "Filename : ${filename} "
   # Download archive
