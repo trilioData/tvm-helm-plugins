@@ -28,16 +28,16 @@ jobs:
           version: latest
           args: release --skip-validate
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Release
         uses: softprops/action-gh-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update plugin.yaml
         uses: pocket-apps/action-update-version@v1
         with:
           files: 'plugin.yaml'
           version-regexp: '\d+.\d+.\d+'
-          repo-token: ${{ secrets.TOKEN }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
