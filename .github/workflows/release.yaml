@@ -40,4 +40,4 @@ jobs:
         with:
           files: 'plugin.yaml'
           version-regexp: '\d+.\d+.\d+'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.PUSH_TOKEN }}
