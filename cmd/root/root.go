@@ -2,25 +2,24 @@ package root
 
 import (
 	"log"
+	"os"
 
 	"github.com/spf13/cobra"
 	pre_upgrade "github.com/trilioData/tvm-helm-plugins/pkg/pre-upgrade"
 )
 
 const (
-	binaryName               = "tvm-upgrade"
-	helmReleaseFlag          = "releaseName"
-	helmReleaseNamespaceFlag = "releaseNamespace"
-	imageRegistryFlag        = "registry"
-	upgradeHookUsage         = "tvm-upgrade triggers pre upgrade job of the TVM v2.0.x helm releases to the new TVM v2.1.x release"
+	binaryName        = "tvm-upgrade"
+	helmReleaseFlag   = "release"
+	imageRegistryFlag = "registry"
+	upgradeHookUsage  = "tvm-upgrade triggers pre upgrade job of the TVM v2.0.x helm releases to the new TVM v2.1.x release"
 
 	shortUsage = "tvm-upgrade is used to run pre upgrade job from v2.0.x to v2.1.x TVM operator"
 	longUsage  = `tvm-upgrade is used to run the pre upgrade job before upgrade from v2.0.x helm release to the new 
 v2.1.x release version of k8s-triliovault-operator.
 
---releaseName      <release_name> of the previous k8s-triliovault-operator
---releaseNamespace <namespace> of the previous k8s-triliovault-operator.
---imageRegistry    <imageRegistry> is the registry where the docker image of operator-webhook-init is stored. 
+--release       <release_name> of the previous k8s-triliovault-operator
+--imageRegistry <imageRegistry> is the registry where the docker image of operator-webhook-init is stored. 
 This needs to be provided only for dark installations`
 )
 
@@ -44,11 +43,9 @@ func newHelmUpgradeCmd() *cobra.Command {
 	}
 
 	cmd.Flags().StringVarP(&helmReleaseName, helmReleaseFlag, "r", "", upgradeHookUsage)
-	cmd.Flags().StringVarP(&helmReleaseNamespace, helmReleaseNamespaceFlag, "", "", upgradeHookUsage)
 	cmd.Flags().StringVarP(&imageRegistryName, imageRegistryFlag, "i", "eu.gcr.io/amazing-chalice-243510", upgradeHookUsage)
 	rErr := cmd.MarkFlagRequired(helmReleaseFlag)
-	nErr := cmd.MarkFlagRequired(helmReleaseNamespaceFlag)
-	if rErr != nil || nErr != nil {
+	if rErr != nil {
 		log.Fatal("Error while setting up the Hook command")
 	}
 
@@ -58,6 +55,7 @@ func newHelmUpgradeCmd() *cobra.Command {
 }
 
 func runHelmPreUpgradeJobE(cmd *cobra.Command, args []string) error {
+	helmReleaseNamespace = os.Getenv("HELM_NAMESPACE")
 	if pre_upgrade.Validate(helmReleaseName, helmReleaseNamespace) {
 		if err := pre_upgrade.Do(helmReleaseName, helmReleaseNamespace, imageRegistryName); err != nil {
 			return err
